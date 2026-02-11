@@ -1,0 +1,111 @@
+<html>
+<head>
+    {{> head}}
+    <style>
+        body {
+            margin: 0;
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background: linear-gradient(135deg, #0f2027, #203a43, #2c5364);
+            font-family: 'Segoe UI', sans-serif;
+            color: white;
+        }
+
+        .card {
+            background: rgba(255,255,255,0.08);
+            backdrop-filter: blur(15px);
+            padding: 40px;
+            border-radius: 20px;
+            box-shadow: 0 20px 50px rgba(0,0,0,0.5);
+            width: 350px;
+            text-align: center;
+        }
+
+        h2 {
+            margin-bottom: 25px;
+            font-weight: 600;
+            letter-spacing: 1px;
+        }
+
+        input {
+            width: 100%;
+            padding: 12px;
+            border-radius: 10px;
+            border: none;
+            outline: none;
+            margin-bottom: 20px;
+            font-size: 16px;
+            text-align: center;
+        }
+
+        button {
+            width: 100%;
+            padding: 12px;
+            margin: 8px 0;
+            border-radius: 10px;
+            border: none;
+            cursor: pointer;
+            font-size: 16px;
+            font-weight: 600;
+            transition: 0.3s ease;
+        }
+
+        #createGame {
+            background: #00c853;
+            color: white;
+        }
+
+        #createGame:hover {
+            background: #00e676;
+            transform: translateY(-2px);
+        }
+
+        #joinGame {
+            background: #2962ff;
+            color: white;
+        }
+
+        #joinGame:hover {
+            background: #448aff;
+            transform: translateY(-2px);
+        }
+
+        #errorMessage {
+            margin-top: 15px;
+            font-size: 14px;
+        }
+    </style>
+</head>
+
+<body>
+
+<div class="card">
+    <h2>♟ Multiplayer Chess</h2>
+
+    <input type="text" id="codeInput" placeholder="Enter game code">
+
+    <button id="createGame">Create Game</button>
+    <button id="joinGame">Join Game</button>
+
+    <div id="errorMessage"></div>
+</div>
+
+<script>
+    $('#createGame').on('click', function() {
+        window.location.replace('/white?code=' + $('#codeInput').val());
+    });
+
+    $('#joinGame').on('click', function() {
+        window.location.replace('/black?code=' + $('#codeInput').val());
+    });
+
+    var urlParams = new URLSearchParams(window.location.search);
+    if (urlParams.get('error') == 'invalidCode') {
+        $('#errorMessage').text('Invalid invite code');
+    }
+</script>
+
+</body>
+</html>
