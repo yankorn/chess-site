@@ -10,26 +10,33 @@ const myIo = require('./sockets/io'),
       routes = require('./routes/routes');
 
 const app = express(),
-      server = http.Server(app),
+      server = http.createServer(app),
       io = socket(server);
 
-server.listen(config.port);
+// ✅ ใช้ PORT จาก Render ก่อน
+const PORT = process.env.PORT || config.port || 3000;
+
+server.listen(PORT, () => {
+  console.log(`Server listening on port ${PORT}`);
+});
 
 games = {};
 
 myIo(io);
 
-console.log(`Server listening on port ${config.port}`);
-
 const Handlebars = handlebars.create({
-  extname: '.html', 
-  partialsDir: path.join(__dirname, '..', 'front', 'views', 'partials'), 
+  extname: '.html',
+  partialsDir: path.join(__dirname, '..', 'front', 'views', 'partials'),
   defaultLayout: false,
   helpers: {}
 });
+
 app.engine('html', Handlebars.engine);
 app.set('view engine', 'html');
 app.set('views', path.join(__dirname, '..', 'front', 'views'));
-app.use('/public', express.static(path.join(__dirname, '..', 'front', 'public')));
+
+app.use('/public', express.static(
+  path.join(__dirname, '..', 'front', 'public')
+));
 
 routes(app);
